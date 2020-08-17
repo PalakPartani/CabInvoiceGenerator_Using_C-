@@ -19,7 +19,7 @@ namespace CabInvoiceGenerator
         /// <param name="distance">input the distance.</param>
         /// <param name="time">input the time.</param>
         /// <returns>the fare.</returns>
-        public double CalculateFare(double distance, int time)
+        public double CalculateFare(double distance, double time)
         {
             double fare = (distance * COSTPERKM) + (time * COSTPERMIN);
             if (fare < COSTMIN)
@@ -28,6 +28,22 @@ namespace CabInvoiceGenerator
             }
 
             return fare;
+        }
+
+        /// <summary>
+        /// Calculate multiple rides.
+        /// </summary>
+        /// <param name="ride">Multiple ride.</param>
+        /// <returns>multiple rides fare.</returns>
+        public double CalculateFare(Rides[] ride)
+        {
+            double totalFare = 0.0;
+            foreach (Rides rides in ride)
+            {
+                totalFare += this.CalculateFare(rides.Distance, rides.Time);
+            }
+
+            return totalFare;
         }
     }
 }
