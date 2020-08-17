@@ -2,6 +2,8 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using System;
+
 namespace CabInvoiceGenerator
 {
     /// <summary>
@@ -22,12 +24,7 @@ namespace CabInvoiceGenerator
         public double CalculateFare(double distance, double time)
         {
             double fare = (distance * COSTPERKM) + (time * COSTPERMIN);
-            if (fare < COSTMIN)
-            {
-                return COSTMIN;
-            }
-
-            return fare;
+            return Math.Max(fare, COSTMIN);
         }
 
         /// <summary>
@@ -35,15 +32,15 @@ namespace CabInvoiceGenerator
         /// </summary>
         /// <param name="ride">Multiple ride.</param>
         /// <returns>multiple rides fare.</returns>
-        public double CalculateFare(Rides[] ride)
+        public InvoiceSummary CalculateFare(Rides[] rides)
         {
-            double totalFare = 0.0;
-            foreach (Rides rides in ride)
+            double totalRideFare = 0.0;
+            foreach (Rides ride in rides)
             {
-                totalFare += this.CalculateFare(rides.Distance, rides.Time);
+                totalRideFare += this.CalculateFare(ride.RideDistance, ride.RideTime);
             }
 
-            return totalFare;
+            return new InvoiceSummary(rides.Length, totalRideFare);
         }
     }
 }
