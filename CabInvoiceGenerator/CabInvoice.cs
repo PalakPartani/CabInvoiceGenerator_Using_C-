@@ -2,10 +2,10 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System;
-
 namespace CabInvoiceGenerator
 {
+    using System;
+
     /// <summary>
     /// CabInvoiceGenerator to generate fare for total ride.
     /// </summary>
@@ -14,6 +14,7 @@ namespace CabInvoiceGenerator
         private readonly int COSTPERMIN = 1;
         private readonly int COSTMIN = 5;
         private readonly int COSTPERKM = 10;
+        private RideRepository rideRepository = new RideRepository();
 
         /// <summary>
         /// This function is used to perform fare calculation.
@@ -30,7 +31,7 @@ namespace CabInvoiceGenerator
         /// <summary>
         /// Calculate multiple rides.
         /// </summary>
-        /// <param name="ride">Multiple ride.</param>
+        /// <param name="rides">Multiple ride.</param>
         /// <returns>multiple rides fare.</returns>
         public InvoiceSummary CalculateFare(Rides[] rides)
         {
@@ -41,6 +42,16 @@ namespace CabInvoiceGenerator
             }
 
             return new InvoiceSummary(rides.Length, totalRideFare);
+        }
+
+        public void AddRides(string userId, Rides[] ride)
+        {
+            rideRepository.AddRide(userId, ride);
+        }
+
+        public InvoiceSummary GetInvoiceSummary(string userId)
+        {
+            return this.CalculateFare(rideRepository.GetRides(userId));
         }
     }
 }
