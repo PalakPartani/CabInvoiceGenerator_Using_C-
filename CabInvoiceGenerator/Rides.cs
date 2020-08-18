@@ -15,6 +15,7 @@ namespace CabInvoiceGenerator
         /// store Ride Time.
         /// </summary>
         public double RideTime;
+        public RideCategory.RideType RideType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Rides"/> class.
@@ -26,6 +27,7 @@ namespace CabInvoiceGenerator
         {
             this.RideDistance = rideDistance;
             this.RideTime = rideTime;
+            this.RideType = rideType;
         }
     }
 }

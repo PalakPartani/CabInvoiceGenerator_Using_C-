@@ -11,7 +11,7 @@ namespace CabInvoiceGenerator
     /// </summary>
     public class RideRepository
     {
-        private Dictionary<string, List<Rides>> RideList = new Dictionary<string, List<Rides>>();
+        private readonly Dictionary<string, List<Rides>> RideList = new Dictionary<string, List<Rides>>();
 
         /// <summary>
         /// Add rides.

@@ -11,10 +11,18 @@ namespace CabInvoiceGenerator
     /// </summary>
     public class CabInvoice
     {
-        private readonly int COSTPERMIN = 1;
-        private readonly int COSTMIN = 5;
-        private readonly int COSTPERKM = 10;
+        private double COSTPERMIN = 1;
+        private double COSTMIN = 5;
+        private double COSTPERKM = 10;
         private RideRepository rideRepository = new RideRepository();
+        private RideCategory rideCategory = new RideCategory();
+
+        public void SetValue(RideCategory rideType)
+        {
+            COSTPERMIN = rideType.CostPerMinute;
+            COSTMIN = rideType.MinimumFare;
+            COSTPERKM = rideType.CostPerKm;
+        }
 
         /// <summary>
         /// This function is used to perform fare calculation.
@@ -22,8 +30,10 @@ namespace CabInvoiceGenerator
         /// <param name="distance">input the distance.</param>
         /// <param name="time">input the time.</param>
         /// <returns>the fare.</returns>
-        public double CalculateFare(double distance, double time)
+        public double CalculateFare(double distance, double time, RideCategory.RideType rideType)
         {
+            RideCategory ride = rideCategory.SetRideValues(rideType);
+            SetValue(ride);
             double fare = (distance * COSTPERKM) + (time * COSTPERMIN);
             return Math.Max(fare, COSTMIN);
         }
@@ -38,7 +48,7 @@ namespace CabInvoiceGenerator
             double totalRideFare = 0.0;
             foreach (Rides ride in rides)
             {
-                totalRideFare += this.CalculateFare(ride.RideDistance, ride.RideTime);
+                totalRideFare += this.CalculateFare(ride.RideDistance, ride.RideTime, ride.RideType);
             }
 
             return new InvoiceSummary(rides.Length, totalRideFare);

@@ -5,8 +5,6 @@
 namespace CabInvoiceGenerator
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
     /// Returns Invoice Summary.
@@ -43,9 +41,9 @@ namespace CabInvoiceGenerator
         }
 
         /// <summary>
-        /// Override HashCode Method
+        /// Override HashCode Method.
         /// </summary>
-        /// <returns>Return Hash Code Value</returns>
+        /// <returns>Return Hash Code Value.</returns>
         public override int GetHashCode()
         {
             return HashCode.Combine(this.NumberOfRides, this.TotalFare, this.AverageFarePerRide);

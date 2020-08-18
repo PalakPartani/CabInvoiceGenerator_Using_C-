@@ -16,6 +16,10 @@ namespace CabInvoiceGenerator
             NORMAL,
         }
 
+        public RideCategory()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RideCategory"/> class.
         /// </summary>
