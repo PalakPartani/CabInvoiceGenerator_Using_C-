@@ -21,7 +21,8 @@ namespace CabInvoiceGenerator
         /// </summary>
         /// <param name="rideDistance">Total Ride Distance.</param>
         /// <param name="rideTime">Total Ride Time.</param>
-        public Rides(double rideDistance, double rideTime)
+        /// <param name="rideType">Ride Type.</param>
+        public Rides(double rideDistance, double rideTime, RideCategory.RideType rideType)
         {
             this.RideDistance = rideDistance;
             this.RideTime = rideTime;

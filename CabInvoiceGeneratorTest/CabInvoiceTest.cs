@@ -46,7 +46,7 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenDistanceAndTimeForMultipleRides_ShouldReturnCorrectTotalFare()
         {
-            Rides[] ride = { new Rides(2.0, 5), new Rides(0.1, 1) };
+            Rides[] ride = { new Rides(2.0, 5, RideCategory.RideType.NORMAL), new Rides(0.1, 1, RideCategory.RideType.NORMAL) };
             InvoiceSummary invoiceSummary = cabInvoiceGenerator.CalculateFare(ride);
             Assert.AreEqual(15.0, invoiceSummary.AverageFarePerRide);
         }
@@ -57,21 +57,72 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenDistanceAndTimeForMultipleRides_WhenProper_ShouldReturnInvoiceSummary()
         {
-            Rides[] rides = { new Rides(2.0, 5), new Rides(0.1, 1) };
+            Rides[] rides = { new Rides(2.0, 5, RideCategory.RideType.NORMAL), new Rides(0.1, 1, RideCategory.RideType.NORMAL) };
             InvoiceSummary invoiceSummary = this.cabInvoiceGenerator.CalculateFare(rides);
             InvoiceSummary summary = new InvoiceSummary(2, 30);
             Assert.AreEqual(summary, invoiceSummary);
         }
 
+        /// <summary>
+        /// Test cab invoice from userId.
+        /// </summary>
         [Test]
         public void GivenUserIdAndRides_ShouldReturnInvoiceSummary()
         {
             string userId = "plk@ggg.com";
-            Rides[] ride = { new Rides(2.0, 5), new Rides(0.1, 1) };
+            Rides[] ride = { new Rides(2.0, 5, RideCategory.RideType.NORMAL), new Rides(0.1, 1, RideCategory.RideType.NORMAL) };
             cabInvoiceGenerator.AddRides(userId, ride);
             InvoiceSummary invoiceSummary = cabInvoiceGenerator.GetInvoiceSummary(userId);
             InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30);
             Assert.AreEqual(expectedInvoiceSummary, invoiceSummary);
+        }
+
+        /// <summary>
+        /// Test premium rides without userId.
+        /// </summary>
+        [Test]
+        public void GivenUserIdAndPremiumRides_ShouldReturnInvoiceSummary()
+        {
+            Rides[] rides = { new Rides(2.0, 5, RideCategory.RideType.PREMIUM), new Rides(0.1, 1, RideCategory.RideType.PREMIUM) };
+            InvoiceSummary invoiceSummary = this.cabInvoiceGenerator.CalculateFare(rides);
+            InvoiceSummary summary = new InvoiceSummary(2, 30);
+            Assert.AreEqual(summary, invoiceSummary);
+        }
+
+        /// <summary>
+        /// Test for multiple prenium and normal rides.
+        /// </summary>
+        [Test]
+        public void GivenUserIdAndNormalAndPremiumRides_ShouldReturnInvoiceSummary()
+        {
+            string userId = "plk@ggg.com";
+            Rides[] rides =
+            {
+                new Rides(2.0, 5, RideCategory.RideType.NORMAL),
+                new Rides(2.0, 5, RideCategory.RideType.PREMIUM),
+            };
+            cabInvoiceGenerator.AddRides(userId, rides);
+            InvoiceSummary summary = cabInvoiceGenerator.GetInvoiceSummary(userId);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 50.0);
+            Assert.AreEqual(expectedInvoiceSummary, summary);
+        }
+
+        /// <summary>
+        /// Test for multiple premium rides.
+        /// </summary>
+        [Test]
+        public void GivenUserIdAndMultiplePremiumRides_ShouldReturnInvoiceSummary()
+        {
+            string userId = "plk@ggg.com";
+            Rides[] rides =
+            {
+                new Rides(2.0, 5, RideCategory.RideType.PREMIUM),
+                new Rides(2.0, 5, RideCategory.RideType.PREMIUM),
+            };
+            cabInvoiceGenerator.AddRides(userId, rides);
+            InvoiceSummary summary = cabInvoiceGenerator.GetInvoiceSummary(userId);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 50.0);
+            Assert.AreEqual(expectedInvoiceSummary, summary);
         }
     }
 }

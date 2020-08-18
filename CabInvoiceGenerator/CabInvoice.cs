@@ -44,11 +44,21 @@ namespace CabInvoiceGenerator
             return new InvoiceSummary(rides.Length, totalRideFare);
         }
 
+        /// <summary>
+        /// Adding the rides.
+        /// </summary>
+        /// <param name="userId">inputs the userId.</param>
+        /// <param name="ride">inputs the ride array.</param>
         public void AddRides(string userId, Rides[] ride)
         {
             rideRepository.AddRide(userId, ride);
         }
 
+        /// <summary>
+        /// Calculating the invoice summary.
+        /// </summary>
+        /// <param name="userId">inputs the userId to determine fare.</param>
+        /// <returns>invoice summary.</returns>
         public InvoiceSummary GetInvoiceSummary(string userId)
         {
             return this.CalculateFare(rideRepository.GetRides(userId));
